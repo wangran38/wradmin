@@ -46,6 +46,12 @@ func init() {
 		admin.POST("/editcategory", controllers.EditCategory)
 		admin.POST("/delcategory", controllers.DelCategory)
 		admin.POST("/treecategory", controllers.TreeCategory)
+		//设备接口
+		admin.POST("/devicelist", controllers.Getdevicelist)
+		admin.POST("/adddevice", controllers.AddDevice)
+		admin.POST("/editdevice", controllers.EditDevice)
+		admin.POST("/deldevice", controllers.DelDevice)
+
 		//新闻文章接口
 		admin.POST("/newslist", controllers.Getnewslist)
 		admin.POST("/addnews", controllers.AddNews)
