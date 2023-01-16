@@ -7,7 +7,7 @@ import (
 
 type Category struct {
 	Id      int64     `json:"id"`
-	Pid     int       `json:"pid"`
+	Pid     int64       `json:"pid"`
 	Title    string    `json:"title" xorm:"varchar(200)"`
 	Image   string    `json:"image" xorm:"TEXT "`
 	Keywords   string  `json:"keywords" xorm:"TEXT "`
@@ -21,7 +21,7 @@ type Category struct {
 }
 type Categorytree struct {
 	Id      int64     `json:"id"`
-	Pid     int       `json:"pid"`
+	Pid     int64       `json:"pid"`
 	Title    string    `json:"title" xorm:"LONGTEXT "`
 	// Image   string    `json:"image" xorm:"LONGTEXT "`
 	Created time.Time `json:"createtime" xorm:"int"`
@@ -82,7 +82,7 @@ func Addcategory(a *Category) error {
 }
 //修改
 func Upcategory(a *Category) (int64,error) {
-	affected, err := orm.Id(a.Id).Update(a)
+	affected, err := orm.Id(a.Id).Cols("pid").Update(a) //通过添加Cols函数指定需要更新结构体中的哪些值，未指定的将不更新，指定了的即使为0也会更新。
 	return affected, err
 
 }

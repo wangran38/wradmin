@@ -215,7 +215,7 @@ func AddRules(a *Authrule) error {
 	return err
 }
 func UpRules(a *Authrule) (int64,error) {
-	affected, err := orm.Id(a.Id).Update(a)
+	affected, err := orm.Id(a.Id).Cols("pid").Update(a)
 	return affected, err
 
 }

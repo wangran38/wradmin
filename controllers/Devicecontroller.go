@@ -13,7 +13,7 @@ type Deviceserch struct { //这个是查询结构体，你也可以用切片，�
 	Id         int64  `json:"id"`
 	Categroyid int64  `json:"categroyid"` //设备的分类id,留口
 	Simid int64     `json:"simid"`                                                          //设备的分类id,留口
-	Number int64  `json:"number"` //设备的分类id,留口
+	Number string  `json:"number"` //设备的分类id,留口
 	Name       string `json:"name"`
 	Limit      int    `json:"limit"`
 	Page       int    `json:"page"`
@@ -92,6 +92,13 @@ func AddDevice(c *gin.Context) {
 	Intodata.Simid = formdata.Simid
 	Intodata.Number = formdata.Number
 	Intodata.Name = formdata.Name
+	Intodata.Image = formdata.Image
+	Intodata.Remark = formdata.Remark
+	Intodata.Factory = formdata.Factory
+	Intodata.Contactpeople = formdata.Contactpeople
+	Intodata.Phone = formdata.Phone
+	Intodata.Isopen = formdata.Isopen
+
 	Intodata.Created = time.Now()
 	info, _ := models.SelectDeviceByName(Intodata.Name) //判断账号是否存在！
 	if info != nil {

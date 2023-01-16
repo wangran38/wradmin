@@ -78,7 +78,7 @@ func Addgroup(a *Authgroup) error {
 }
 //修改
 func Upgroup(a *Authgroup) (int64,error) {
-	affected, err := orm.Id(a.Id).Update(a)
+	affected, err := orm.Id(a.Id).Cols("pid").Update(a)
 	return affected, err
 
 }

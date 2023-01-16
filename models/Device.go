@@ -12,19 +12,19 @@ type Device struct {
 	Id         int64     `json:"id"`
 	Categroyid int64     `json:"categroyid"`                                                          //设备的分类id,留口
 	Simid int64     `json:"simid"`                                                          //设备的分类id,留口
-	Number      int64    `json:"number"`                                                                 //设备编号
+	Number      string    `json:"number"`                                                                 //设备编号
 	Name       string    `json:"name"`                                                                 //设备名称
 	Image   string    `json:"image" xorm:"TEXT "` //设备的图片
 	Remark     string    `json:"remark"`                                                               //设备的备注
 	Factory   string   `json:"factory"`    //设备所属厂家
 	Contactpeople   string   `json:"contact_people"`    //设备所属厂家联系人
 	Phone   string   `json:"contact_phone"`    //设备所属厂家联系人电话
-	Isopen     int       `json:"is_open" xorm:"not null default 1 comment('是否启用 默认1 菜单 0 文件') TINYINT"` //是否显示
+	Isopen     int       `json:"isopen" xorm:"not null default 1 comment('是否启用 默认1 菜单 0 文件') TINYINT"` //是否显示
 	Created    time.Time `json:"createtime" xorm:"created int"`
 	Updated    time.Time `json:"updatetime" xorm:"updated int"`
 	Deletetime int       `json:"deletetime"`
 	Weigh      int       `json:"weigh"`                     //排序
-	Status     string    `json:"status" xorm:"varchar(40)"` //设备状态
+	Status     int       `json:"status" xorm:"not null default 1 comment('是否启用 默认1 未激活 2 已激活 3 未在线 4 在线') TINYINT"` //是否显示
 }
 
 func (a *Device) TableName() string {
@@ -52,8 +52,9 @@ func GetDeviceList(limit int, pagesize int, search *Device, order string) []*Dev
 	if search.Id > 0 {
 		session = session.And("id", search.Id)
 	}
-	if search.Number > 0 {
-		session = session.And("number", search.Number)
+	if search.Number != "" {
+		number := "%" + search.Number + "%"
+		session = session.And("number LIKE ?", number)
 	}
 	if search.Name != "" {
 		title := "%" + search.Name + "%"
@@ -82,8 +83,9 @@ func GetDevicetotal(search *Device) int64 { //查询的总数量
 	if search.Id > 0 {
 		session = session.And("id", search.Id)
 	}
-	if search.Number > 0 {
-		session = session.And("number", search.Number)
+	if search.Number != "" {
+		number := "%" + search.Number + "%"
+		session = session.And("number LIKE ?", number)
 	}
 	if search.Name != "" {
 		title := "%" + search.Name + "%"
