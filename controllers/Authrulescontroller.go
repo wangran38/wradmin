@@ -154,7 +154,7 @@ func AddRules(c *gin.Context) {
 }
 
 func EditRules(c *gin.Context) {
-	var formdata Rulestable
+	var formdata models.Authrule
 	c.ShouldBind(&formdata)
 		// 	c.JSON(200, gin.H{
 		// 	"code": "201",
@@ -167,13 +167,14 @@ func EditRules(c *gin.Context) {
 	Rulesdata.Title = formdata.Title
 	Rulesdata.Pathname = formdata.Pathname
 	Rulesdata.Icon = formdata.Icon
+	Rulesdata.Ismenu = formdata.Ismenu
 	Rulesdata.Component = formdata.Component
 
 	res,err := models.UpRules(Rulesdata) //判断账号是否存在！
 		if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
-			"msg":  "添加数据出错！",
+			"msg":  "修改数据出错！",
 			"data": err,
 		})
 		return
@@ -182,7 +183,7 @@ func EditRules(c *gin.Context) {
 		// result["id"] = Rulestable.Id //返回当前总数
 		c.JSON(200, gin.H{
 			"code": 200,
-			"msg":  "数据添加成功！",
+			"msg":  "更新成功！",
 			"data": res,
 		})
 

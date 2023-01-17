@@ -51,7 +51,13 @@ func init() {
 		admin.POST("/adddevice", controllers.AddDevice)
 		admin.POST("/editdevice", controllers.EditDevice)
 		admin.POST("/deldevice", controllers.DelDevice)
-
+		//SIM卡接口
+		admin.POST("/simcardlist", controllers.GetSimcardlist)
+		admin.POST("/addsimcard", controllers.AddSimcard)
+		admin.POST("/editsimcard", controllers.EditSimcard)
+		admin.POST("/delsimcard", controllers.DelSimcard)
+		//开启tcp服务
+		admin.POST("/opentcp", controllers.Opentcp)
 		//新闻文章接口
 		admin.POST("/newslist", controllers.Getnewslist)
 		admin.POST("/addnews", controllers.AddNews)
@@ -59,7 +65,9 @@ func init() {
 		admin.POST("/delnews", controllers.DelNews)
 
 	}
+	// tcp := router.Group("/tcp") {
 
+	// }
 	// router.POST("/admin/add", controllers.AdminController) //登录
 	router.Run(":8081")
 }

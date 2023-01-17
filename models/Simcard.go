@@ -118,7 +118,7 @@ func UpSimcard(a *Simcard) (int64, error) { //更新，传结构体过来，取�
 }
 
 //判断是否唯一
-func SelectSimcardByName(Simid int64) (*Simcard, error) {
+func SelectSimcardBySimid(Simid int64) (*Simcard, error) {
 	a := new(Simcard)
 	has, err := orm.Where("simid = ?", Simid).Get(a)
 	if err != nil {
