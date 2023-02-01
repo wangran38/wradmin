@@ -1,11 +1,13 @@
 package routers
 
 import (
+	"bufio"
 	"fmt"
-	"wradmin/controllers"
-	_ "wradmin/models"
+	"net"
 	"net/http"
 	"strings"
+	"wradmin/controllers"
+	_ "wradmin/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,7 +59,7 @@ func init() {
 		admin.POST("/editsimcard", controllers.EditSimcard)
 		admin.POST("/delsimcard", controllers.DelSimcard)
 		//开启tcp服务
-		admin.POST("/opentcp", controllers.Opentcp)
+		// admin.POST("/opentcp", controllers.Opentcp)
 		//新闻文章接口
 		admin.POST("/newslist", controllers.Getnewslist)
 		admin.POST("/addnews", controllers.AddNews)
@@ -65,14 +67,25 @@ func init() {
 		admin.POST("/delnews", controllers.DelNews)
 
 	}
-	// tcp := router.Group("/tcp") {
-
-	// }
-	// router.POST("/admin/add", controllers.AdminController) //登录
+	//开启TCP服务啦
+	listen, err := net.Listen("tcp", "127.0.0.1:20000")
+	if err != nil {
+		fmt.Println("listen failed, err:", err)
+		return
+	}
+	for {
+		conn, err := listen.Accept() // 建立连接
+		if err != nil {
+			fmt.Println("accept failed, err:", err)
+			continue
+		}
+		go process(conn) // 启动一个goroutine处理连接
+	}
+	//开启TCP服务结束
 	router.Run(":8081")
 }
 
-////// 跨域
+// //// 跨域
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method               //请求方法
@@ -111,5 +124,20 @@ func Cors() gin.HandlerFunc {
 		// }
 		// 处理请求
 		c.Next() //  处理请求
+	}
+}
+func process(conn net.Conn) {
+	defer conn.Close() // 关闭连接
+	for {
+		reader := bufio.NewReader(conn)
+		var buf [128]byte
+		n, err := reader.Read(buf[:]) // 读取数据
+		if err != nil {
+			fmt.Println("read from client failed, err:", err)
+			break
+		}
+		recvStr := string(buf[:n])
+		fmt.Println("收到SIM客户端发来的激活数据：", recvStr)
+		conn.Write([]byte(recvStr)) // 发送数据
 	}
 }

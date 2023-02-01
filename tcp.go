@@ -23,6 +23,7 @@ func process(conn net.Conn) {
 		conn.Write([]byte(recvStr)) // 发送数据
 	}
 }
+
 func main() {
 	listen, err := net.Listen("tcp", "127.0.0.1:20000")
 	if err != nil {
