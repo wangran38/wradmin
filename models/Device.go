@@ -9,22 +9,22 @@ import (
 )
 
 type Device struct {
-	Id         int64     `json:"id"`
-	Categroyid int64     `json:"categroyid"`                                                          //设备的分类id,留口
-	Simid int64     `json:"simid"`                                                          //设备的分类id,留口
-	Number      string    `json:"number"`                                                                 //设备编号
-	Name       string    `json:"name"`                                                                 //设备名称
-	Image   string    `json:"image" xorm:"TEXT "` //设备的图片
-	Remark     string    `json:"remark"`                                                               //设备的备注
-	Factory   string   `json:"factory"`    //设备所属厂家
-	Contactpeople   string   `json:"contact_people"`    //设备所属厂家联系人
-	Phone   string   `json:"contact_phone"`    //设备所属厂家联系人电话
-	Isopen     int       `json:"isopen" xorm:"not null default 1 comment('是否启用 默认1 菜单 0 文件') TINYINT"` //是否显示
-	Created    time.Time `json:"createtime" xorm:"created int"`
-	Updated    time.Time `json:"updatetime" xorm:"updated int"`
-	Deletetime int       `json:"deletetime"`
-	Weigh      int       `json:"weigh"`                     //排序
-	Status     int       `json:"status" xorm:"not null default 1 comment('是否启用 默认1 未激活 2 已激活 3 未在线 4 在线') TINYINT"` //是否显示
+	Id            int64     `json:"id"`
+	Categroyid    int64     `json:"categroyid"`                                                           //设备的分类id,留口
+	Simid         int64     `json:"simid"`                                                                //设备的编号,留口
+	Number        string    `json:"number"`                                                               //设备编号
+	Name          string    `json:"name"`                                                                 //设备名称
+	Image         string    `json:"image" xorm:"TEXT "`                                                   //设备的图片
+	Remark        string    `json:"remark"`                                                               //设备的备注
+	Factory       string    `json:"factory"`                                                              //设备所属厂家
+	Contactpeople string    `json:"contact_people"`                                                       //设备所属厂家联系人
+	Phone         string    `json:"contact_phone"`                                                        //设备所属厂家联系人电话
+	Isopen        int       `json:"isopen" xorm:"not null default 1 comment('是否启用 默认1 菜单 0 文件') TINYINT"` //是否显示
+	Created       time.Time `json:"createtime" xorm:"created int"`
+	Updated       time.Time `json:"updatetime" xorm:"updated int"`
+	Deletetime    int       `json:"deletetime"`
+	Weigh         int       `json:"weigh"`                                                                             //排序
+	Status        int       `json:"status" xorm:"not null default 1 comment('是否启用 默认1 未激活 2 已激活 3 未在线 4 在线') TINYINT"` //是否显示
 }
 
 func (a *Device) TableName() string {
@@ -123,7 +123,7 @@ func UpDevice(a *Device) (int64, error) { //更新，传结构体过来，取结
 
 }
 
-//判断设备名称是否重复的查找
+// 判断设备名称是否重复的查找
 func SelectDeviceByName(Name string) (*Device, error) {
 	a := new(Device)
 	has, err := orm.Where("name = ?", Name).Get(a)

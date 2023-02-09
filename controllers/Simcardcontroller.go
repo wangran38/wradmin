@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"wradmin/models"
 	"time"
+	"wradmin/models"
 
 	// "net/http"
 	// "ginstudy/utils"
@@ -10,19 +10,19 @@ import (
 )
 
 type Simcardserch struct { //这个是查询结构体，你也可以用切片，我这里用的是固定的结构体反射
-	Id         int64  `json:"id"`
-	Iccid int64     `json:"iccid"`                         //与卡片上打印的ICCID一一对应（卡片上最后一位为英文字母，系统上最后一位会将这个英文字母随机转换成数字。另外系统只需根据卡片上的前19位数字进行搜索）
-	Simid int64     `json:"simid"`                         //设备的分类id,SIM卡标识是物联网卡在系统的唯一标识，在API接口调用中需要用到
-	Deviceid int64     `json:"deviceid"`                         //设备的id
-	Msisdn      string    `json:"msisdn"`                  //相当于固定网的用户电话号码，是供用户拨打的公开号码。
-	Imsi       string    `json:"imsi"`                     //国际移动用户识别码（IMSI），国际上为唯一识别一个移动用户所分配的号码。
-	Name       string    `json:"name"`       
-	Limit      int    `json:"limit"`
-	Page       int    `json:"page"`
-	Order      string `json:"order"`
+	Id       int64  `json:"id"`
+	Iccid    int64  `json:"iccid"`    //与卡片上打印的ICCID一一对应（卡片上最后一位为英文字母，系统上最后一位会将这个英文字母随机转换成数字。另外系统只需根据卡片上的前19位数字进行搜索）
+	Simid    int64  `json:"simid"`    //设备的分类id,SIM卡标识是物联网卡在系统的唯一标识，在API接口调用中需要用到
+	Deviceid int64  `json:"deviceid"` //设备的id
+	Msisdn   string `json:"msisdn"`   //相当于固定网的用户电话号码，是供用户拨打的公开号码。
+	Imsi     string `json:"imsi"`     //国际移动用户识别码（IMSI），国际上为唯一识别一个移动用户所分配的号码。
+	Name     string `json:"name"`
+	Limit    int    `json:"limit"`
+	Page     int    `json:"page"`
+	Order    string `json:"order"`
 }
 
-//获取当前用户信息
+// 获取当前用户信息
 func GetSimcardlist(c *gin.Context) {
 	//从header中获取到token，这里是获取从前端提交过来的参数绑定到结构体
 	var searchdata Simcardserch
@@ -35,13 +35,13 @@ func GetSimcardlist(c *gin.Context) {
 	// name:=""
 	// fmt.Println(username)
 	search := &models.Simcard{
-		Id:         searchdata.Id,
-		Iccid: searchdata.Iccid,
-		Simid: searchdata.Simid,
+		Id:       searchdata.Id,
+		Iccid:    searchdata.Iccid,
+		Simid:    searchdata.Simid,
 		Deviceid: searchdata.Deviceid,
-		Msisdn: searchdata.Msisdn,
-		Imsi: searchdata.Imsi,
-		Name:       searchdata.Name,
+		Msisdn:   searchdata.Msisdn,
+		Imsi:     searchdata.Imsi,
+		Name:     searchdata.Name,
 	}
 	// fmt.Println(search.Title)
 	listdata := models.GetSimcardList(limit, page, search, order)
@@ -137,12 +137,18 @@ func EditSimcard(c *gin.Context) {
 	// 	"msg":  "添加数据出错！",
 	// 	"data": formdata,
 	// })
-	Rulesdata := new(models.Simcard)
-	Rulesdata.Id = formdata.Id
-	Rulesdata.Iccid = formdata.Iccid
-	Rulesdata.Name = formdata.Name
-
-	res, err := models.UpSimcard(Rulesdata) //判断账号是否存在！
+	Editdata := new(models.Simcard)
+	Editdata.Id = formdata.Id
+	Editdata.Iccid = formdata.Iccid
+	Editdata.Simid = formdata.Simid
+	Editdata.Deviceid = formdata.Deviceid
+	Editdata.Name = formdata.Name
+	Editdata.Image = formdata.Image
+	Editdata.Remark = formdata.Remark
+	Editdata.Msisdn = formdata.Msisdn
+	Editdata.Imsi = formdata.Imsi
+	Editdata.Isopen = formdata.Isopen
+	res, err := models.UpSimcard(Editdata) //判断账号是否存在！
 	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,

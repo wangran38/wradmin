@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"wradmin/models"
 	"time"
+	"wradmin/models"
 
 	// "net/http"
 	// "ginstudy/utils"
@@ -12,15 +12,15 @@ import (
 type Deviceserch struct { //这个是查询结构体，你也可以用切片，我这里用的是固定的结构体反射
 	Id         int64  `json:"id"`
 	Categroyid int64  `json:"categroyid"` //设备的分类id,留口
-	Simid int64     `json:"simid"`                                                          //设备的分类id,留口
-	Number string  `json:"number"` //设备的分类id,留口
+	Simid      int64  `json:"simid"`      //设备的分类id,留口
+	Number     string `json:"number"`     //设备的分类id,留口
 	Name       string `json:"name"`
 	Limit      int    `json:"limit"`
 	Page       int    `json:"page"`
 	Order      string `json:"order"`
 }
 
-//获取当前用户信息
+// 获取当前用户信息
 func Getdevicelist(c *gin.Context) {
 	//从header中获取到token，这里是获取从前端提交过来的参数绑定到结构体
 	var searchdata Deviceserch
@@ -35,7 +35,7 @@ func Getdevicelist(c *gin.Context) {
 	search := &models.Device{
 		Id:         searchdata.Id,
 		Categroyid: searchdata.Categroyid,
-		Number: searchdata.Number,
+		Number:     searchdata.Number,
 		Name:       searchdata.Name,
 	}
 	// fmt.Println(search.Title)
@@ -137,12 +137,22 @@ func EditDevice(c *gin.Context) {
 	// 	"msg":  "添加数据出错！",
 	// 	"data": formdata,
 	// })
-	Rulesdata := new(models.Device)
-	Rulesdata.Id = formdata.Id
-	Rulesdata.Categroyid = formdata.Categroyid
-	Rulesdata.Name = formdata.Name
+	Editdata := new(models.Device)
+	Editdata.Id = formdata.Id
+	Editdata.Categroyid = formdata.Categroyid
+	Editdata.Name = formdata.Name
+	Editdata.Categroyid = formdata.Categroyid
+	Editdata.Simid = formdata.Simid
+	Editdata.Number = formdata.Number
+	Editdata.Name = formdata.Name
+	Editdata.Image = formdata.Image
+	Editdata.Remark = formdata.Remark
+	Editdata.Factory = formdata.Factory
+	Editdata.Contactpeople = formdata.Contactpeople
+	Editdata.Phone = formdata.Phone
+	Editdata.Isopen = formdata.Isopen
 
-	res, err := models.UpDevice(Rulesdata) //判断账号是否存在！
+	res, err := models.UpDevice(Editdata) //判断账号是否存在！
 	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
