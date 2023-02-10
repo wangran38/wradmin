@@ -17,38 +17,35 @@ func Opentcp(c *gin.Context) {
 		// "data":    ,
 	})
 	go Open()
-	// listen, err := net.Listen("tcp", "127.0.0.1:20000")
-	// if err != nil {
-	// 	c.JSON(200, gin.H{
-	// 		"code": 200,
-	// 		"msg":  "操作失败！",
-	// 	})
-	// 	return
-	// } else {
-	// 	fmt.Println("已经开启tcp端口成功！")
-	// 	// Okbeng(c)
-	// 	for {
-	// 		conn, err := listen.Accept() // 建立连接
-	// 		if err != nil {
-	// 			fmt.Println("accept failed, err:", err)
-	// 			continue
-	// 		}
-	// 		go process(conn) // 启动一个goroutine处理连接
-	// 	}
-
-	// }
 
 }
 
-// func Okbeng(c *gin.Context) {
-// 	go c.JSON(200, gin.H{
+// func Closetcp(c *gin.Context) {
+// 	c.JSON(200, gin.H{
 // 		"code":    200,
-// 		"message": "服务器端口已开启！",
+// 		"message": "tcp已经关闭！",
 // 		// "data":    ,
 // 	})
+// 	go Stop()
 
 // }
-
+//
+//	func Stop(conn net.Conn) {
+//		conn.Close() // 关闭连接
+//		// listen, err := net.Listen("tcp", "127.0.0.1:20000")
+//		// if err != nil {
+//		// 	fmt.Println("listen failed, err:", err)
+//		// 	return
+//		// }
+//		// for {
+//		// 	conn, err := listen.Accept() // 建立连接
+//		// 	if err != nil {
+//		// 		fmt.Println("accept failed, err:", err)
+//		// 		continue
+//		// 	}
+//		// 	go process(conn) // 启动一个goroutine处理连接
+//		// }
+//	}
 func Open() {
 	listen, err := net.Listen("tcp", "127.0.0.1:20000")
 	if err != nil {
@@ -78,6 +75,9 @@ func process(conn net.Conn) {
 		// p, _ := strconv.ParseInt(buf[:n] 2, 10)
 		// p1, _ := strconv.FormatInt(p, 16)
 		recvStr := string(buf[:n])
+		if recvStr == "关闭" {
+			conn.Close()
+		}
 		str := hex.EncodeToString(buf[:n]) //转字符串
 		dizhi := SubStr(str, 0, 2)
 		//bh, _ := hex.DecodeString(dizhi)
